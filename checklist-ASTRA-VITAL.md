@@ -9,7 +9,7 @@
 
 ## 📊 PROGRESO GENERAL
 
-- [ ] Fase 1 — Arquitectura
+- [x] Fase 1 — Arquitectura ✅
 - [ ] Fase 2 — Simulador
 - [ ] Fase 3 — Data Quality
 - [ ] Fase 4 — Risk Engine
@@ -139,41 +139,41 @@
 ## 5. ARQUITECTURA DEL SOFTWARE
 
 ### 5.1 Backend (`backend/`)
-- [ ] `api/`
-- [ ] `core/telemetry/`
-- [ ] `core/health/`
-- [ ] `core/behavior/`
-- [ ] `core/environment/`
-- [ ] `core/mission/`
+- [x] `api/`
+- [x] `core/telemetry/`
+- [x] `core/health/`
+- [x] `core/behavior/`
+- [x] `core/environment/`
+- [x] `core/mission/`
 - [ ] `sensors/ecg.py`
 - [ ] `sensors/imu.py`
 - [ ] `sensors/oxygen.py`
 - [ ] `sensors/pressure.py`
 - [ ] `sensors/temperature.py`
 - [ ] `sensors/radiation.py`
-- [ ] `sensors/simulator.py`
-- [ ] `ai/anomaly_detection/`
-- [ ] `ai/behavioral/`
-- [ ] `ai/radiation/`
-- [ ] `ai/assistant/`
-- [ ] `risk/engine.py`
-- [ ] `risk/rules.py`
-- [ ] `risk/models.py`
-- [ ] `communications/dtn.py`
-- [ ] `communications/bundle.py`
-- [ ] `communications/queue.py`
-- [ ] `communications/routing.py`
-- [ ] `storage/`
-- [ ] `config/`
+- [x] `sensors/simulator.py`
+- [x] `ai/anomaly_detection/`
+- [x] `ai/behavioral/`
+- [x] `ai/radiation/`
+- [x] `ai/assistant/`
+- [x] `risk/engine.py`
+- [x] `risk/rules.py`
+- [x] `risk/models.py`
+- [x] `communications/dtn.py`
+- [x] `communications/bundle.py`
+- [x] `communications/queue.py`
+- [x] `communications/routing.py`
+- [x] `storage/`
+- [x] `config/`
 
 ### 5.2 Frontend (`frontend/`)
-- [ ] `astronaut/`
-- [ ] `mission-control/`
-- [ ] `medical/`
-- [ ] `behavioral/`
-- [ ] `radiation/`
-- [ ] `network/`
-- [ ] `ai/`
+- [x] `astronaut/`
+- [x] `mission-control/`
+- [x] `medical/`
+- [x] `behavioral/`
+- [x] `radiation/`
+- [x] `network/`
+- [x] `ai/`
 
 ### 5.3 Simulador (`simulator/`)
 - [ ] `astronaut.py`
@@ -516,18 +516,18 @@
 ## 20. STACK TECNOLÓGICO
 
 ### Frontend
-- [ ] TypeScript
-- [ ] React
-- [ ] Tailwind
-- [ ] Cloudflare
+- [x] TypeScript
+- [x] React
+- [x] Tailwind
+- [ ] Cloudflare (deploy pendiente)
 
 ### Backend
-- [ ] Python
-- [ ] FastAPI
+- [x] Python
+- [x] FastAPI
 - [ ] Vercel (prototipo/API)
 
 ### IA
-- [ ] Python
+- [x] Python
 - [ ] Scikit-learn
 - [ ] PyTorch / ONNX según el modelo
 - [ ] Modelos especializados
@@ -550,21 +550,21 @@
 
 ## 21. REPOSITORIO
 
-- [ ] `space-health/backend/`
-- [ ] `space-health/frontend/`
-- [ ] `space-health/simulator/`
-- [ ] `space-health/shared/`
-- [ ] `space-health/tests/`
-- [ ] `space-health/docs/`
+- [x] `backend/` ✅ creado y en GitHub
+- [x] `frontend/` ✅ creado y en GitHub
+- [ ] `simulator/`
+- [x] `shared/` ✅ creado y en GitHub
+- [ ] `tests/`
+- [ ] `docs/`
 
 ### Esquemas en `shared/` (mismo modelo Python ↔ TypeScript)
-- [ ] `TelemetryEvent`
-- [ ] `HealthEvent`
+- [x] `TelemetryEvent`
+- [x] `HealthEvent`
 - [ ] `EnvironmentalEvent`
 - [ ] `RiskEvent`
 - [ ] `AlertEvent`
 - [ ] `DTNBundle`
-- [ ] `CrewState`
+- [x] `CrewState`
 
 ---
 
@@ -630,13 +630,13 @@
 ## 25. FASES DE IMPLEMENTACIÓN
 
 ### FASE 1 — Arquitectura
-- [ ] Definir componentes
-- [ ] Definir nodos
-- [ ] Definir flujo de información
-- [ ] Definir esquemas de datos
-- [ ] Definir interfaces
-- [ ] Definir APIs
-- [ ] **Entregable:** arquitectura documentada
+- [x] Definir componentes
+- [x] Definir nodos
+- [x] Definir flujo de información
+- [x] Definir esquemas de datos
+- [x] Definir interfaces
+- [x] Definir APIs
+- [x] **Entregable:** arquitectura documentada (ASTRA-VITAL.md)
 
 ### FASE 2 — Simulador
 - [ ] Sensor virtual: heart rate
