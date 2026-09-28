@@ -1,0 +1,1 @@
+"""Contracts shared by the Python services and TypeScript clients."""

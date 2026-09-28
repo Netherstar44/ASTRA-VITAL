@@ -1,0 +1,1 @@
+"""AI-assisted modules with replaceable deterministic MVP implementations."""

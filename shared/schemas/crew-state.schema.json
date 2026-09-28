@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://astra-vital.example/schemas/crew-state.json",
+  "title": "CrewState",
+  "type": "object",
+  "required": [
+    "physiology",
+    "behavior",
+    "cognitive_load",
+    "fatigue",
+    "environmental_exposure",
+    "radiation_risk",
+    "mission_stress"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "physiology": { "type": "number", "minimum": 0, "maximum": 1 },
+    "behavior": { "type": "number", "minimum": 0, "maximum": 1 },
+    "cognitive_load": { "type": "number", "minimum": 0, "maximum": 1 },
+    "fatigue": { "type": "number", "minimum": 0, "maximum": 1 },
+    "environmental_exposure": { "type": "number", "minimum": 0, "maximum": 1 },
+    "radiation_risk": { "type": "number", "minimum": 0, "maximum": 1 },
+    "mission_stress": { "type": "number", "minimum": 0, "maximum": 1 }
+  }
+}
