@@ -116,46 +116,10 @@ class MissionService:
             updated_at=datetime.now(timezone.utc),
         )
 
-    def assistant_answer(self, role: str, question: str) -> dict[str, str]:
+    def assistant_answer(self, role: str, question: str) -> dict[str, Any]:
         snapshot = self.snapshot()
-        q = question.lower()
-        if any(w in q for w in ("radia", "solar", "clima", "tormenta")):
-            ans = radiation_summary(snapshot, role)
-        elif any(w in q for w in ("comport", "conduct", "fatiga", "cognit", "ritmo", "carga")):
-            ans = behavior_summary(snapshot, role)
-        elif any(w in q for w in ("anomal", "telemetr", "signo", "pulso", "coraz", "sensor", "spo2")):
-            anom_text = ", ".join(snapshot.anomalies) if snapshot.anomalies else "Ninguna detectada. Señales dentro de línea base."
-            ans = (
-                f"Telemetría en tiempo real ({snapshot.crew_id}): "
-                f"Pulso {snapshot.readings['heart_rate']:.0f} BPM, "
-                f"SpO2 {snapshot.readings['spo2']:.0f}%, "
-                f"Temp {snapshot.readings['temperature']:.1f}°C, "
-                f"CO2 {snapshot.readings['co2']:.1f} mmHg, "
-                f"IMU {snapshot.readings['imu']:.2f}g. "
-                f"Anomalías: {anom_text}"
-            )
-        elif any(w in q for w in ("riesgo", "recom", "accion", "refugio", "protocolo", "seguridad")):
-            factors_text = ", ".join(snapshot.risk["factors"]) if snapshot.risk["factors"] else "Nominales"
-            ans = (
-                f"Evaluación de riesgo: {snapshot.risk['summary']} "
-                f"(Nivel: {snapshot.risk['level'].upper()}, Prioridad: {snapshot.risk['priority']}). "
-                f"Factores contribuyentes: {factors_text}. "
-                f"Recomendación ASTRA: {snapshot.risk['recommendation']}"
-            )
-        elif any(w in q for w in ("enlace", "comunic", "dtn", "buffer", "tierra", "houston")):
-            ans = (
-                f"Estado de conectividad: Enlace {snapshot.link_status.upper()}. "
-                f"Eventos en buffer DTN local: {snapshot.dtn.get('buffered', 0)}. "
-                f"Paquetes transmitidos prioritariamente: {snapshot.dtn.get('transmitted', 0)}. "
-                f"Continuidad operacional garantizada sin dependencia de Tierra."
-            )
-        else:
-            ans = (
-                f"ASTRA Core Intelligence ({snapshot.phase}) — {snapshot.phase_title}: "
-                f"{snapshot.phase_message} "
-                f"Recomendación actual: {snapshot.risk['recommendation']}"
-            )
-        return {"role": role, "question": question, "answer": ans}
+        from backend.ai.assistant.service import generate_role_answer
+        return generate_role_answer(snapshot, role=role, question=question)
 
     def _telemetry_events(self, readings: dict[str, float], priority: str) -> list[TelemetryEvent]:
         events = [

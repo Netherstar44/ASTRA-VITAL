@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DTNBundle",
+  "type": "object",
+  "required": [
+    "bundle_id",
+    "source_node",
+    "destination_node",
+    "creation_timestamp",
+    "priority",
+    "ttl_seconds",
+    "payload",
+    "delivered",
+    "hop_count"
+  ],
+  "properties": {
+    "bundle_id": { "type": "string" },
+    "source_node": { "type": "string" },
+    "destination_node": { "type": "string" },
+    "creation_timestamp": { "type": "string", "format": "date-time" },
+    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3", "P4"] },
+    "ttl_seconds": { "type": "integer" },
+    "payload": { "type": "object" },
+    "delivered": { "type": "boolean" },
+    "hop_count": { "type": "integer" }
+  }
+}

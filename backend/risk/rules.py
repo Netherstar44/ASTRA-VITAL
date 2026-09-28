@@ -1,3 +1,13 @@
+def radiation_risk_rule(
+    *,
+    radiation_trend: float,
+    is_eva: bool = True,
+    shielding: str = "low",
+) -> bool:
+    """Deterministic rule: IF radiation ↑ AND EVA = TRUE AND shielding = LOW THEN radiation_risk = HIGH"""
+    return radiation_trend >= 0.45 and is_eva and shielding in {"low", "minimal", "suit_only"}
+
+
 def risk_factors(
     *,
     readings: dict[str, float],
@@ -10,7 +20,7 @@ def risk_factors(
 ) -> list[str]:
     factors: list[str] = []
     # Rule: IF radiation ↑ AND EVA = TRUE AND shielding = LOW THEN radiation_risk = HIGH
-    if environment_score >= 0.5 and is_eva and shielding in {"low", "minimal", "suit_only"}:
+    if radiation_risk_rule(radiation_trend=environment_score, is_eva=is_eva, shielding=shielding):
         factors.append("radiation_risk = HIGH (Solar event active during unshielded EVA)")
     elif environment_score >= 0.4:
         factors.append("radiation trend increasing")

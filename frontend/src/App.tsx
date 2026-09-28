@@ -317,89 +317,273 @@ function ScenarioRail({ step, onAdvance, paused, onPause, onReset }: {
 }
 
 // ---------------------------------------------------------------------------
-// AI Assistant Panel
+// AI Assistant Panel (FASE 9 — Multi-Role Context-Aware Intelligence)
 // ---------------------------------------------------------------------------
+type AssistantRole = 'astronaut' | 'flight_controller' | 'medical_officer' | 'behavioral_health';
+
+interface RoleConfig {
+  key: AssistantRole;
+  label: string;
+  shortLabel: string;
+  icon: typeof UserRound;
+  color: string;
+  description: string;
+  suggestions: string[];
+}
+
+const ROLES: RoleConfig[] = [
+  {
+    key: 'astronaut',
+    label: 'Astronaut (EVA)',
+    shortLabel: 'Astronaut',
+    icon: UserRound,
+    color: '#82bdb5',
+    description: 'HUD directo, calmado y accionable para tripulación en traje.',
+    suggestions: [
+      '¿Por qué me estás alertando?',
+      '¿Qué debo hacer ahora?',
+      '¿Cuál es el estado de radiación y refugio?',
+      '¿Cómo están mis signos vitales en el traje?',
+    ],
+  },
+  {
+    key: 'flight_controller',
+    label: 'Flight Controller',
+    shortLabel: 'Flight Ops',
+    icon: Radio,
+    color: '#efc66d',
+    description: 'Telemetría de sistemas, redes DTN y línea de tiempo de misión.',
+    suggestions: [
+      '¿Qué está ocurriendo con Crew-07?',
+      '¿Cuál es el estado del buffer DTN y reintentos?',
+      '¿Cuál es la evaluación de riesgo operacional?',
+      '¿Qué impacto hay en el cronograma EVA?',
+    ],
+  },
+  {
+    key: 'medical_officer',
+    label: 'Medical Officer',
+    shortLabel: 'Surgeon',
+    icon: HeartPulse,
+    color: '#df9080',
+    description: 'Fisiopatología, capnografía, anomalías y tolerancia basal.',
+    suggestions: [
+      '¿Qué cambios fisiológicos presenta?',
+      '¿Hay anomalías fisiológicas o arritmias?',
+      '¿Cuáles son los parámetros de SpO2 y CO2?',
+      '¿Cuál es el historial y tolerancia acumulada?',
+    ],
+  },
+  {
+    key: 'behavioral_health',
+    label: 'Behavioral Health',
+    shortLabel: 'Neuro-Health',
+    icon: BrainCircuit,
+    color: '#a9b5df',
+    description: 'Carga cognitiva, temblor fino, fatiga motriz y estresores.',
+    suggestions: [
+      '¿Se han detectado cambios de comportamiento?',
+      '¿Cuál es el índice de temblor fino en guante?',
+      '¿Cómo evoluciona la carga cognitiva y estrés?',
+      '¿Qué factores estresores de misión influyen?',
+    ],
+  },
+];
+
 function AssistantPanel({ onClose, step }: { onClose: () => void; step: number }) {
-  const [messages, setMessages] = useState<Array<{ sender: 'user' | 'astra'; text: string; time: string }>>([{
+  const [role, setRole] = useState<AssistantRole>('flight_controller');
+  const [messages, setMessages] = useState<Array<{ sender: 'user' | 'astra'; text: string; role?: AssistantRole; time: string }>>([{
     sender: 'astra',
+    role: 'flight_controller',
     text: step >= 4
-      ? 'El enlace con Tierra está interrumpido. El núcleo de IA local conserva el contexto completo: Vega está a 11 min del refugio, el buffer DTN resguarda la telemetría y las medidas preventivas continúan operativas.'
+      ? 'Enlace con Tierra interrumpido. Núcleo de IA local operativo al 100%: Vega a 11 min del refugio, buffer DTN resguardando telemetría multiseñal y protocolos preventivos activos.'
       : step >= 2
-      ? 'Detecto una divergencia moderada entre pulso, temperatura y cadencia motora. No es una emergencia clínica; representa una ventana óptima para descanso e hidratación preventiva.'
-      : 'Sistemas dentro de límites nominales. Comparando telemetría multiseñal con la línea base adaptativa de la tripulación en el corredor lunar sur.',
+      ? 'Divergencia moderada detectada entre pulso, radiación ambiental y temblor fino. Ventana de prevención óptima para hidratación y repliegue seguro.'
+      : 'Sistemas dentro de límites nominales. Comparando telemetría multiseñal con la línea base adaptativa en el corredor lunar sur.',
     time: 'LOCAL',
   }]);
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const activeRoleConfig = ROLES.find(r => r.key === role) ?? ROLES[1];
+
   const ask = async (q: string) => {
     const trimmed = q.trim();
     if (!trimmed || loading) return;
-    setMessages(prev => [...prev, { sender: 'user', text: trimmed, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
+    setMessages(prev => [...prev, {
+      sender: 'user',
+      role,
+      text: trimmed,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    }]);
     setQuestion('');
     setLoading(true);
     try {
       const res = await fetch('/api/assistant', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ role: 'flight_controller', question: trimmed }),
+        body: JSON.stringify({ role, question: trimmed }),
       });
       if (res.ok) {
         const data = await res.json();
-        setMessages(prev => [...prev, { sender: 'astra', text: data.answer || 'Informacion procesada en el nodo local.', time: 'ASTRA' }]);
+        setMessages(prev => [...prev, {
+          sender: 'astra',
+          role,
+          text: data.answer || 'Información procesada en el nodo local.',
+          time: 'ASTRA',
+        }]);
         playAlertChime('nominal');
       } else throw new Error();
     } catch {
-      setMessages(prev => [...prev, { sender: 'astra', text: 'Nodo de inteligencia local respondiendo autonomamente: Telemetria dentro de limites evaluados.', time: 'LOCAL' }]);
+      setMessages(prev => [...prev, {
+        sender: 'astra',
+        role,
+        text: 'Nodo de inteligencia local respondiendo autónomamente: Telemetría dentro de límites evaluados.',
+        time: 'LOCAL',
+      }]);
     } finally {
       setLoading(false);
     }
   };
 
-  const suggestions = ['¿Cuál es el estado de radiación?', '¿Cómo está el comportamiento de Vega?', '¿Hay anomalías en la telemetría?', '¿Qué acción preventiva recomiendas?', '¿Cuál es el estado del buffer DTN?'];
-
   return (
-    <aside className="fixed inset-y-0 right-0 z-30 flex w-full max-w-[420px] flex-col border-l border-[#3c4b56] bg-[#1d2b36] text-[#e8e5da] shadow-[-18px_0_40px_rgba(25,31,35,.18)] reveal" data-testid="panel-assistant">
-      <div className="flex items-center justify-between border-b border-[#3b4a55] px-5 py-4">
+    <aside className="fixed inset-y-0 right-0 z-30 flex w-full max-w-[460px] flex-col border-l border-[#3c4b56] bg-[#1d2b36] text-[#e8e5da] shadow-[-18px_0_40px_rgba(25,31,35,.25)] reveal" data-testid="panel-assistant">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-[#3b4a55] px-5 py-4 bg-[#192630]">
         <div className="flex items-center gap-3">
-          <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#398b82] text-[#e9f0e8]"><Sparkles size={17} /></div>
+          <div className="grid h-9 w-9 place-items-center rounded-lg bg-[#398b82] text-[#e9f0e8] shadow-sm">
+            <Sparkles size={17} />
+          </div>
           <div>
-            <div className="text-sm font-bold">ASTRA assistant</div>
-            <div className="mono text-[9px] uppercase tracking-[.18em] text-[#8ca5a5]">Local intelligence layer</div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-extrabold tracking-tight">ASTRA Assistant</span>
+              <span className="mono rounded bg-[#263741] px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-[#82bdb5] border border-[#3b4a55]">
+                FASE 9
+              </span>
+            </div>
+            <div className="mono text-[9px] uppercase tracking-[.18em] text-[#8ca5a5]">Context-Aware Edge AI</div>
           </div>
         </div>
-        <button onClick={onClose} className="text-[#aeb8b6] hover:text-[#efc66d]" aria-label="Close assistant" data-testid="button-close-assistant"><X size={18} /></button>
+        <button onClick={onClose} className="rounded-md p-1 text-[#aeb8b6] hover:bg-[#263741] hover:text-[#efc66d] transition" aria-label="Close assistant" data-testid="button-close-assistant">
+          <X size={18} />
+        </button>
       </div>
-      <div className="panel-grid flex-1 overflow-y-auto p-4 space-y-4">
-        <div className="rounded-lg bg-[#263741]/50 border border-[#3b4a55] p-3 text-[11px] leading-5 text-[#9eaeae]">
-          Contexto 100% local al nodo de salud. No depende de conexion con la Tierra para generar recomendaciones.
+
+      {/* Role Selector Tabs (FASE 9) */}
+      <div className="border-b border-[#3b4a55] bg-[#17232c] px-3 py-2.5">
+        <div className="mono text-[9px] uppercase tracking-[.14em] text-[#7d9196] mb-1.5 px-1">
+          Select Operational Role:
         </div>
+        <div className="grid grid-cols-4 gap-1">
+          {ROLES.map(r => {
+            const IconComp = r.icon;
+            const active = role === r.key;
+            return (
+              <button
+                key={r.key}
+                onClick={() => setRole(r.key)}
+                className={`flex flex-col items-center gap-1 rounded-md px-1.5 py-1.5 text-center transition ${
+                  active
+                    ? 'bg-[#2b3e4a] text-[#ffffff] shadow-sm border border-[#486070]'
+                    : 'text-[#8ca0a6] hover:bg-[#202f3a] hover:text-[#c4d0d3] border border-transparent'
+                }`}
+                title={r.label}
+                data-testid={`button-role-${r.key}`}
+              >
+                <IconComp size={14} style={{ color: active ? r.color : undefined }} />
+                <span className="text-[10px] font-bold truncate max-w-full leading-tight">{r.shortLabel}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-2 flex items-center gap-2 rounded bg-[#1e2e38] px-2.5 py-1.5 text-[10px] text-[#9db0b5] border border-[#2e404c]">
+          <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: activeRoleConfig.color }} />
+          <span className="font-semibold text-[#e1e9ea]">{activeRoleConfig.label}:</span>
+          <span className="truncate">{activeRoleConfig.description}</span>
+        </div>
+      </div>
+
+      {/* Chat messages */}
+      <div className="panel-grid flex-1 overflow-y-auto p-4 space-y-4">
         <div className="space-y-3">
-          {messages.map((m, idx) => (
-            <div key={idx} className={`flex gap-2.5 ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-              {m.sender === 'astra' && <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#398b82]/20 text-[#83c6bc]"><Sparkles size={13} /></div>}
-              <div className={`max-w-[85%] rounded-xl p-3 text-[12px] leading-5 ${m.sender === 'user' ? 'bg-[#398b82] text-[#eef6f5] rounded-tr-none' : 'bg-[#263741] text-[#d1d8d2] border border-[#42535e] rounded-tl-none'}`}>{m.text}</div>
-            </div>
-          ))}
+          {messages.map((m, idx) => {
+            const isUser = m.sender === 'user';
+            const msgRoleConfig = ROLES.find(r => r.key === m.role);
+            return (
+              <div key={idx} className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
+                {!isUser && msgRoleConfig && (
+                  <div className="mb-1 flex items-center gap-1.5 text-[9px] mono uppercase tracking-wider text-[#82bdb5] pl-1">
+                    <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: msgRoleConfig.color }} />
+                    ASTRA Intelligence · {msgRoleConfig.shortLabel}
+                  </div>
+                )}
+                <div className={`flex gap-2.5 max-w-[90%] ${isUser ? 'justify-end' : 'justify-start'}`}>
+                  {!isUser && (
+                    <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#398b82]/20 text-[#83c6bc] mt-0.5">
+                      <Sparkles size={13} />
+                    </div>
+                  )}
+                  <div
+                    className={`rounded-xl p-3 text-[12px] leading-relaxed whitespace-pre-line ${
+                      isUser
+                        ? 'bg-[#398b82] text-[#f2f8f7] rounded-tr-none shadow-sm'
+                        : 'bg-[#243542] text-[#d6dfdc] border border-[#3b4e5c] rounded-tl-none shadow-sm'
+                    }`}
+                  >
+                    {m.text}
+                  </div>
+                </div>
+                <span className="mono mt-1 text-[8px] text-[#71858a] px-1">{m.time}</span>
+              </div>
+            );
+          })}
           {loading && (
-            <div className="flex items-center gap-2 text-xs text-[#8ca5a5] pl-9">
-              <Loader2 size={14} className="animate-spin" />
-              <span>ASTRA evaluando contexto local...</span>
+            <div className="flex items-center gap-2 text-xs text-[#8ca5a5] pl-9 py-2">
+              <Loader2 size={14} className="animate-spin text-[#82bdb5]" />
+              <span>ASTRA evaluando contexto ({activeRoleConfig.shortLabel})...</span>
             </div>
           )}
         </div>
-        <div className="pt-2">
-          <div className="mono text-[9px] uppercase tracking-[.18em] text-[#85999d] mb-2">Preguntas contextuales sugeridas</div>
-          <div className="flex flex-wrap gap-1.5">
-            {suggestions.map(s => (
-              <button key={s} onClick={() => ask(s)} className="rounded-md border border-[#3b4a55] bg-[#22333e] px-2.5 py-1 text-[11px] text-[#b8c6c4] hover:border-[#83c6bc] hover:text-[#e8e5da] text-left transition">{s}</button>
+
+        {/* Suggested questions per role */}
+        <div className="pt-2 border-t border-[#31424e]">
+          <div className="mono text-[9px] uppercase tracking-[.18em] text-[#85999d] mb-2 flex items-center justify-between">
+            <span>Preguntas sugeridas · {activeRoleConfig.shortLabel}</span>
+            <span className="text-[8px] text-[#5e747a]">Context-tailored</span>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            {activeRoleConfig.suggestions.map(s => (
+              <button
+                key={s}
+                onClick={() => ask(s)}
+                className="group flex items-center justify-between rounded-lg border border-[#374955] bg-[#22333e] px-3 py-2 text-[11px] text-[#b8c6c4] hover:border-[#82bdb5] hover:bg-[#283c48] hover:text-[#e8e5da] text-left transition"
+              >
+                <span>{s}</span>
+                <ArrowRight size={12} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition" />
+              </button>
             ))}
           </div>
         </div>
       </div>
-      <form onSubmit={e => { e.preventDefault(); ask(question); }} className="border-t border-[#3b4a55] p-3 flex items-center gap-2 bg-[#172530]">
-        <input type="text" value={question} onChange={e => setQuestion(e.target.value)} placeholder="Pregunta sobre la mision, signos o radiacion..." className="flex-1 bg-[#263741] border border-[#42535e] rounded-lg px-3 py-2 text-[12px] text-[#e8e5da] placeholder-[#7d8f94] focus:outline-none focus:border-[#398b82]" data-testid="input-assistant-question" />
-        <button type="submit" disabled={!question.trim() || loading} className="grid h-8 w-8 place-items-center rounded-lg bg-[#398b82] text-[#e9f0e8] hover:bg-[#439c92] disabled:opacity-40" data-testid="button-assistant-send"><Send size={14} /></button>
+
+      {/* Input form */}
+      <form onSubmit={e => { e.preventDefault(); ask(question); }} className="border-t border-[#3b4a55] p-3 flex items-center gap-2 bg-[#17232c]">
+        <input
+          type="text"
+          value={question}
+          onChange={e => setQuestion(e.target.value)}
+          placeholder={`Consulta ASTRA como ${activeRoleConfig.shortLabel}...`}
+          className="flex-1 bg-[#243542] border border-[#3b4e5c] rounded-lg px-3 py-2 text-[12px] text-[#e8e5da] placeholder-[#7d8f94] focus:outline-none focus:border-[#82bdb5]"
+          data-testid="input-assistant-question"
+        />
+        <button
+          type="submit"
+          disabled={!question.trim() || loading}
+          className="grid h-8 w-8 place-items-center rounded-lg bg-[#398b82] text-[#e9f0e8] hover:bg-[#439c92] disabled:opacity-40 transition"
+          data-testid="button-assistant-send"
+        >
+          <Send size={14} />
+        </button>
       </form>
     </aside>
   );

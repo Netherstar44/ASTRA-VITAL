@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RiskEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "mission_id",
+    "astronaut_id",
+    "timestamp",
+    "risk_level",
+    "score",
+    "factors",
+    "recommendation",
+    "priority"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "astronaut_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "risk_level": {
+      "type": "string",
+      "enum": ["nominal", "observation", "action", "critical"]
+    },
+    "score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "factors": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommendation": { "type": "string" },
+    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3", "P4"] }
+  }
+}

@@ -54,6 +54,70 @@ class HealthAssessment(BaseModel):
     factors: list[str] = Field(default_factory=list)
 
 
+class HealthEvent(BaseModel):
+    event_id: str
+    mission_id: str
+    astronaut_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    status: Literal["nominal", "observation", "action", "critical"]
+    confidence: float = Field(ge=0, le=1)
+    factors: list[str] = Field(default_factory=list)
+    priority: Priority = "P1"
+
+
+class EnvironmentalEvent(BaseModel):
+    event_id: str
+    mission_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    event_type: Literal["quiet", "solar_event", "solar_proton_pulse", "radiation_spike", "geomagnetic_storm"]
+    flux_value: float
+    unit: str = "mSv/h"
+    shielding_condition: Literal["nominal", "low", "enhanced"] = "nominal"
+    risk_score: float = Field(ge=0, le=1)
+    priority: Priority = "P1"
+
+
+class RiskEvent(BaseModel):
+    event_id: str
+    mission_id: str
+    astronaut_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    risk_level: Literal["nominal", "observation", "action", "critical"]
+    score: float = Field(ge=0, le=1)
+    factors: list[str] = Field(default_factory=list)
+    recommendation: str
+    priority: Priority = "P1"
+
+
+class AlertEvent(BaseModel):
+    event_id: str
+    mission_id: str
+    astronaut_id: str
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    severity: Literal["nominal", "observation", "action", "critical"]
+    hud_symbol: str
+    hud_label: str
+    title: str
+    message: str
+    action_hint: str
+    audio_tone: Literal["none", "soft", "attention", "urgent"] = "none"
+    haptic_pattern: str = "none"
+    interruption_level: Literal["background", "passive", "active", "mandatory"] = "background"
+    priority: Priority = "P1"
+
+
+class DTNBundle(BaseModel):
+    bundle_id: str
+    source_node: str
+    destination_node: str
+    creation_timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    priority: Priority = "P3"
+    ttl_seconds: int = 3600
+    payload: dict = Field(default_factory=dict)
+    delivered: bool = False
+    hop_count: int = 0
+
+
 def build_event(
     *,
     event_id: str,

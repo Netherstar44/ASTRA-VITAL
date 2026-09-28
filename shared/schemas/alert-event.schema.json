@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AlertEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "mission_id",
+    "astronaut_id",
+    "timestamp",
+    "severity",
+    "hud_symbol",
+    "hud_label",
+    "title",
+    "message",
+    "action_hint",
+    "audio_tone",
+    "haptic_pattern",
+    "interruption_level",
+    "priority"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "astronaut_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "severity": {
+      "type": "string",
+      "enum": ["nominal", "observation", "action", "critical"]
+    },
+    "hud_symbol": { "type": "string" },
+    "hud_label": { "type": "string" },
+    "title": { "type": "string" },
+    "message": { "type": "string" },
+    "action_hint": { "type": "string" },
+    "audio_tone": {
+      "type": "string",
+      "enum": ["none", "soft", "attention", "urgent"]
+    },
+    "haptic_pattern": { "type": "string" },
+    "interruption_level": {
+      "type": "string",
+      "enum": ["background", "passive", "active", "mandatory"]
+    },
+    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3", "P4"] }
+  }
+}

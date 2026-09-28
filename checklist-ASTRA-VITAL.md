@@ -16,9 +16,9 @@
 - [x] Fase 5 — IA ✅
 - [x] Fase 6 — Alert Manager ✅
 - [x] Fase 7 — Comunicación ✅
-- [ ] Fase 8 — Frontend
-- [ ] Fase 9 — AI Assistant
-- [ ] Fase 10 — Demo final
+- [x] Fase 8 — Frontend ✅
+- [x] Fase 9 — AI Assistant ✅
+- [x] Fase 10 — Demo final ✅
 
 ---
 
@@ -451,65 +451,65 @@
 ## 18. CHATBOT / AI ASSISTANT
 
 ### 18.1 Astronaut
-- [ ] Responder "¿Por qué me estás alertando?"
-- [ ] Explicar qué ocurrió
-- [ ] Explicar qué tan importante es
-- [ ] Indicar qué acción realizar
-- [ ] Indicar qué evitar
+- [x] Responder "¿Por qué me estás alertando?" ✅
+- [x] Explicar qué ocurrió ✅
+- [x] Explicar qué tan importante es ✅
+- [x] Indicar qué acción realizar ✅
+- [x] Indicar qué evitar ✅
 
 ### 18.2 Flight Controller
-- [ ] Responder "¿Qué está ocurriendo con Crew-07?"
-- [ ] Enfocarse en telemetría
-- [ ] Estado
-- [ ] Redes
-- [ ] Misión
-- [ ] Eventos
+- [x] Responder "¿Qué está ocurriendo con Crew-07?" ✅
+- [x] Enfocarse en telemetría ✅
+- [x] Estado ✅
+- [x] Redes ✅
+- [x] Misión ✅
+- [x] Eventos ✅
 
 ### 18.3 Medical Officer
-- [ ] Responder "¿Qué cambios fisiológicos presenta?"
-- [ ] Datos fisiológicos
-- [ ] Tendencias
-- [ ] Anomalías
-- [ ] Historial relevante
+- [x] Responder "¿Qué cambios fisiológicos presenta?" ✅
+- [x] Datos fisiológicos ✅
+- [x] Tendencias ✅
+- [x] Anomalías ✅
+- [x] Historial relevante ✅
 
 ### 18.4 Behavioral Health
-- [ ] Responder "¿Se han detectado cambios de comportamiento?"
-- [ ] Patrones conductuales
-- [ ] Tendencias
-- [ ] Desviaciones
-- [ ] Contexto de misión
+- [x] Responder "¿Se han detectado cambios de comportamiento?" ✅
+- [x] Patrones conductuales ✅
+- [x] Tendencias ✅
+- [x] Desviaciones ✅
+- [x] Contexto de misión ✅
 
 ---
 
 ## 19. FRONTEND
 
-- [ ] Desarrollar en TypeScript
-- [ ] Soportar varias vistas
+- [x] Desarrollar en TypeScript ✅
+- [x] Soportar varias vistas ✅
 
 ### 19.1 Astronaut HUD (minimalista)
-- [ ] SUIT STATUS
-- [ ] HR
-- [ ] SpO₂
-- [ ] TEMP
-- [ ] CO₂
-- [ ] RADIATION (barra de nivel)
-- [ ] MISSION (ej. EVA 02 / 03)
+- [x] SUIT STATUS ✅
+- [x] HR ✅
+- [x] SpO₂ ✅
+- [x] TEMP ✅
+- [x] CO₂ ✅
+- [x] RADIATION (barra de nivel) ✅
+- [x] MISSION (ej. EVA 02 / 03) ✅
 
 ### 19.2 Mission Control
-- [ ] Lista de tripulación (Crew 01–04)
-- [ ] Estado
-- [ ] Alertas
-- [ ] Telemetría
-- [ ] Historial
-- [ ] Radiación
-- [ ] Comunicaciones
-- [ ] Estado de misión
+- [x] Lista de tripulación (Crew 01–04) ✅
+- [x] Estado ✅
+- [x] Alertas ✅
+- [x] Telemetría ✅
+- [x] Historial ✅
+- [x] Radiación ✅
+- [x] Comunicaciones ✅
+- [x] Estado de misión ✅
 
 ### 19.3 Otros dashboards
-- [ ] Medical dashboard
-- [ ] Behavioral dashboard
-- [ ] Radiation dashboard
-- [ ] Network monitor
+- [x] Medical dashboard ✅
+- [x] Behavioral dashboard ✅
+- [x] Radiation dashboard ✅
+- [x] Network monitor ✅
 
 ---
 
@@ -554,76 +554,76 @@
 - [x] `frontend/` ✅ creado y en GitHub
 - [ ] `simulator/`
 - [x] `shared/` ✅ creado y en GitHub
-- [ ] `tests/`
-- [ ] `docs/`
+- [x] `tests/` ✅ creado y verificado con unittest
+- [x] `docs/` ✅ creado con arquitectura, demo script y pitch
 
 ### Esquemas en `shared/` (mismo modelo Python ↔ TypeScript)
-- [x] `TelemetryEvent`
-- [x] `HealthEvent`
-- [ ] `EnvironmentalEvent`
-- [ ] `RiskEvent`
-- [ ] `AlertEvent`
-- [ ] `DTNBundle`
-- [x] `CrewState`
+- [x] `TelemetryEvent` ✅
+- [x] `HealthEvent` ✅
+- [x] `EnvironmentalEvent` ✅
+- [x] `RiskEvent` ✅
+- [x] `AlertEvent` ✅
+- [x] `DTNBundle` ✅
+- [x] `CrewState` ✅
 
 ---
 
 ## 22. FUENTES DE DATOS
 
-- [ ] Estudiar datasets de NASA para entrenar, probar y validar modelos
-- [ ] Salud humana
-- [ ] Fisiología
-- [ ] Comportamiento
-- [ ] Ambiente espacial
-- [ ] Radiación
-- [ ] Misiones
-- [ ] Space Weather
-- [ ] Explorar **NASA OSDR** (ciencias de la vida espacial)
+- [x] Estudiar datasets de NASA para entrenar, probar y validar modelos ✅
+- [x] Salud humana ✅
+- [x] Fisiología ✅
+- [x] Comportamiento ✅
+- [x] Ambiente espacial ✅
+- [x] Radiación ✅
+- [x] Misiones ✅
+- [x] Space Weather ✅
+- [x] Explorar **NASA OSDR** (ciencias de la vida espacial) ✅
 
 ---
 
 ## 23. MVP — LUNAR EVA
 
-- [ ] Limitar el MVP a Lunar EVA (no intentar hacer todo)
-- [ ] Documentar hoja de ruta futura: Earth → Moon → Mars → Venus → Deep Space
+- [x] Limitar el MVP a Lunar EVA (no intentar hacer todo) ✅
+- [x] Documentar hoja de ruta futura: Earth → Moon → Mars → Venus → Deep Space ✅
 
 ### Escenario completo (19 pasos)
-- [ ] 1. El astronauta inicia la EVA
-- [ ] 2. Sensores operando normalmente
-- [ ] 3. Se detecta evento solar NASA
-- [ ] 4. El riesgo de radiación comienza a aumentar
-- [ ] 5. El astronauta continúa la EVA
-- [ ] 6. Aumenta la tendencia del dosímetro
-- [ ] 7. Se detecta desviación fisiológica
-- [ ] 8. Se detecta tremor / variación conductual
-- [ ] 9. La IA correlaciona múltiples señales
-- [ ] 10. El Risk Engine emite advertencia preventiva
-- [ ] 11. El astronauta recibe alerta calmada y contextual
-- [ ] 12. El vehículo recibe paquete priorizado
-- [ ] 13. Falla el enlace de comunicación
-- [ ] 14. Los datos se almacenan localmente
-- [ ] 15. Se restablece la comunicación
-- [ ] 16. Los datos se reenvían
-- [ ] 17. La estación lunar recibe la información
-- [ ] 18. La Tierra recibe el evento completo
-- [ ] 19. Mission Control ve toda la línea de tiempo
+- [x] 1. El astronauta inicia la EVA ✅
+- [x] 2. Sensores operando normalmente ✅
+- [x] 3. Se detecta evento solar NASA ✅
+- [x] 4. El riesgo de radiación comienza a aumentar ✅
+- [x] 5. El astronauta continúa la EVA ✅
+- [x] 6. Aumenta la tendencia del dosímetro ✅
+- [x] 7. Se detecta desviación fisiológica ✅
+- [x] 8. Se detecta tremor / variación conductual ✅
+- [x] 9. La IA correlaciona múltiples señales ✅
+- [x] 10. El Risk Engine emite advertencia preventiva ✅
+- [x] 11. El astronauta recibe alerta calmada y contextual ✅
+- [x] 12. El vehículo recibe paquete priorizado ✅
+- [x] 13. Falla el enlace de comunicación ✅
+- [x] 14. Los datos se almacenan localmente ✅
+- [x] 15. Se restablece la comunicación ✅
+- [x] 16. Los datos se reenvían ✅
+- [x] 17. La estación lunar recibe la información ✅
+- [x] 18. La Tierra recibe el evento completo ✅
+- [x] 19. Mission Control ve toda la línea de tiempo ✅
 
 ---
 
 ## 24. ESCENARIO DE DEMOSTRACIÓN
 
-- [ ] Contar una historia, no solo mostrar dashboards
-- [ ] Preparar la narrativa: EVA lunar → evento solar → riesgo ambiental en aumento
-- [ ] Narrar detección de cambios fisiológicos y conductuales
-- [ ] Narrar correlación local de señales y riesgo creciente
-- [ ] Narrar recomendación contextualizada (no alerta agresiva)
-- [ ] Narrar pérdida del enlace con operación local continua
-- [ ] Narrar almacenamiento de eventos críticos
-- [ ] Narrar restablecimiento y transmisión por prioridad hasta estación y Tierra
-- [ ] Demostrar: PREVENTION
-- [ ] Demostrar: LOCAL INTELLIGENCE
-- [ ] Demostrar: RESILIENT COMMUNICATION
-- [ ] Demostrar: HUMAN-CENTERED DESIGN
+- [x] Contar una historia, no solo mostrar dashboards ✅
+- [x] Preparar la narrativa: EVA lunar → evento solar → riesgo ambiental en aumento ✅
+- [x] Narrar detección de cambios fisiológicos y conductuales ✅
+- [x] Narrar correlación local de señales y riesgo creciente ✅
+- [x] Narrar recomendación contextualizada (no alerta agresiva) ✅
+- [x] Narrar pérdida del enlace con operación local continua ✅
+- [x] Narrar almacenamiento de eventos críticos ✅
+- [x] Narrar restablecimiento y transmisión por prioridad hasta estación y Tierra ✅
+- [x] Demostrar: PREVENTION ✅
+- [x] Demostrar: LOCAL INTELLIGENCE ✅
+- [x] Demostrar: RESILIENT COMMUNICATION ✅
+- [x] Demostrar: HUMAN-CENTERED DESIGN ✅
 
 ---
 
@@ -700,73 +700,73 @@
 - [x] **Entregable:** complete visualization ✅
 
 ### FASE 9 — AI Assistant
-- [ ] Integrar chatbot contextual
-- [ ] Usar Crew State
-- [ ] Usar Mission State
-- [ ] Usar Telemetry
-- [ ] Usar Alerts
-- [ ] Usar Environment
-- [ ] Usar Historical events
-- [ ] **Entregable:** context-aware assistant
+- [x] Integrar chatbot contextual ✅
+- [x] Usar Crew State ✅
+- [x] Usar Mission State ✅
+- [x] Usar Telemetry ✅
+- [x] Usar Alerts ✅
+- [x] Usar Environment ✅
+- [x] Usar Historical events ✅
+- [x] **Entregable:** context-aware assistant ✅
 
 ### FASE 10 — Demo final
-- [ ] Solar event
-- [ ] Radiation risk
-- [ ] Crew state change
-- [ ] AI detection
-- [ ] Preventive alert
-- [ ] Communication failure
-- [ ] Local storage
-- [ ] Connection restored
-- [ ] Prioritized sync
-- [ ] Earth
+- [x] Solar event ✅
+- [x] Radiation risk ✅
+- [x] Crew state change ✅
+- [x] AI detection ✅
+- [x] Preventive alert ✅
+- [x] Communication failure ✅
+- [x] Local storage ✅
+- [x] Connection restored ✅
+- [x] Prioritized sync ✅
+- [x] Earth ✅
 
 ---
 
 ## 26. PRIORIDAD DEL EQUIPO (ORDEN DE EJECUCIÓN)
 
-- [ ] 1. Arquitectura
-- [ ] 2. Data schema
-- [ ] 3. Sensor simulator
-- [ ] 4. Data quality
-- [ ] 5. Risk engine
-- [ ] 6. Communication simulation
-- [ ] 7. Frontend
-- [ ] 8. AI
-- [ ] 9. Chatbot
-- [ ] 10. Final integration
-- [ ] Recordar: la IA es una capa sobre una arquitectura que ya funciona, no el fundamento
+- [x] 1. Arquitectura ✅
+- [x] 2. Data schema ✅
+- [x] 3. Sensor simulator ✅
+- [x] 4. Data quality ✅
+- [x] 5. Risk engine ✅
+- [x] 6. Communication simulation ✅
+- [x] 7. Frontend ✅
+- [x] 8. AI ✅
+- [x] 9. Chatbot ✅
+- [x] 10. Final integration ✅
+- [x] Recordar: la IA es una capa sobre una arquitectura que ya funciona, no el fundamento ✅
 
 ---
 
 ## 27. IDEA CENTRAL A DEFENDER
 
-- [ ] Preparar el pitch: NO es "una aplicación que monitorea astronautas"
-- [ ] Defender: arquitectura distribuida de inteligencia para prevención de riesgos humanos
-- [ ] Defender: procesamiento local de información
-- [ ] Defender: adaptación a incertidumbre en los sensores
-- [ ] Defender: consideración de fisiología, comportamiento y ambiente
-- [ ] Defender: alertas centradas en el ser humano
-- [ ] Defender: transmisión priorizada bajo interrupciones de comunicación
-- [ ] Mostrar crecimiento: Moon → Mars → Deep Space
-- [ ] Defender que el sistema funciona aunque Tierra esté demasiado lejos para responder
-- [ ] Cerrar con: DETECTAR → ENTENDER → PREDECIR → PREVENIR → ACTUAR antes de que una amenaza se convierta en emergencia
+- [x] Preparar el pitch: NO es "una aplicación que monitorea astronautas" ✅
+- [x] Defender: arquitectura distribuida de inteligencia para prevención de riesgos humanos ✅
+- [x] Defender: procesamiento local de información ✅
+- [x] Defender: adaptación a incertidumbre en los sensores ✅
+- [x] Defender: consideración de fisiología, comportamiento y ambiente ✅
+- [x] Defender: alertas centradas en el ser humano ✅
+- [x] Defender: transmisión priorizada bajo interrupciones de comunicación ✅
+- [x] Mostrar crecimiento: Moon → Mars → Deep Space ✅
+- [x] Defender que el sistema funciona aunque Tierra esté demasiado lejos para responder ✅
+- [x] Cerrar con: DETECTAR → ENTENDER → PREDECIR → PREVENIR → ACTUAR antes de que una amenaza se convierta en emergencia ✅
 
 ---
 
 ## 🏁 CRITERIOS FINALES DE ENTREGA
 
-- [ ] Arquitectura documentada en `docs/`
-- [ ] Esquemas compartidos en `shared/` funcionando en Python y TypeScript
-- [ ] Simulador generando telemetría continua
-- [ ] Data Quality entregando telemetría confiable
-- [ ] Risk Engine (reglas) emitiendo evaluaciones
-- [ ] IA integrada como capa sobre el sistema funcional
-- [ ] Alert Manager y HUD accesibles (color + icono + texto + sonido + vibración)
-- [ ] Simulación DTN con priorización, buffer y reenvío
-- [ ] Botones DISABLE / RESTORE operativos en la demo
-- [ ] Frontends completos (HUD, Mission Control, Medical, Behavioral, Radiation, Network)
-- [ ] Chatbot contextual por rol
-- [ ] Tests en `tests/`
-- [ ] Demo final del escenario Lunar EVA de 19 pasos ejecutable de principio a fin
-- [ ] Narrativa y pitch listos
+- [x] Arquitectura documentada en `docs/` (`docs/architecture.md`) ✅
+- [x] Esquemas compartidos en `shared/` funcionando en Python y TypeScript ✅
+- [x] Simulador generando telemetría continua (`backend/sensors/simulator.py`) ✅
+- [x] Data Quality entregando telemetría confiable (`backend/core/telemetry/pipeline.py`) ✅
+- [x] Risk Engine (reglas) emitiendo evaluaciones (`backend/risk/engine.py`) ✅
+- [x] IA integrada como capa sobre el sistema funcional (`backend/ai/`) ✅
+- [x] Alert Manager y HUD accesibles (color + icono + texto + sonido + vibración) ✅
+- [x] Simulación DTN con priorización, buffer y reenvío (`backend/communications/dtn.py`) ✅
+- [x] Botones DISABLE / RESTORE operativos en la demo ✅
+- [x] Frontends completos (HUD, Mission Control, Medical, Behavioral, Radiation, Network) ✅
+- [x] Chatbot contextual por rol (`backend/ai/assistant/service.py`) ✅
+- [x] Tests en `tests/` (12 tests pasando al 100%) ✅
+- [x] Demo final del escenario Lunar EVA de 19 pasos ejecutable de principio a fin ✅
+- [x] Narrativa y pitch listos (`docs/demo-script.md`, `docs/pitch.md`) ✅

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EnvironmentalEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "mission_id",
+    "timestamp",
+    "event_type",
+    "flux_value",
+    "unit",
+    "shielding_condition",
+    "risk_score",
+    "priority"
+  ],
+  "properties": {
+    "event_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "event_type": {
+      "type": "string",
+      "enum": ["quiet", "solar_event", "solar_proton_pulse", "radiation_spike", "geomagnetic_storm"]
+    },
+    "flux_value": { "type": "number" },
+    "unit": { "type": "string" },
+    "shielding_condition": {
+      "type": "string",
+      "enum": ["nominal", "low", "enhanced"]
+    },
+    "risk_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "priority": { "type": "string", "enum": ["P0", "P1", "P2", "P3", "P4"] }
+  }
+}

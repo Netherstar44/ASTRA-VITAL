@@ -33,6 +33,10 @@ class DTNStore:
         # Last flush result — used to animate the "sync complete" UI state
         self._last_flush: list[DTNBundle] = []
 
+    @property
+    def buffered_count(self) -> int:
+        return len(self.queue)
+
     # ------------------------------------------------------------------
     # Ingress
     # ------------------------------------------------------------------
