@@ -5,13 +5,19 @@ def risk_factors(
     health_status: str,
     behavior_state: str,
     relay_enabled: bool,
+    is_eva: bool = True,
+    shielding: str = "low",
 ) -> list[str]:
     factors: list[str] = []
-    if environment_score >= 0.6:
+    # Rule: IF radiation ↑ AND EVA = TRUE AND shielding = LOW THEN radiation_risk = HIGH
+    if environment_score >= 0.5 and is_eva and shielding in {"low", "minimal", "suit_only"}:
+        factors.append("radiation_risk = HIGH (Solar event active during unshielded EVA)")
+    elif environment_score >= 0.4:
         factors.append("radiation trend increasing")
-    if readings["tremor"] >= 0.35:
+
+    if readings.get("tremor", 0.0) >= 0.35:
         factors.append("tremor above baseline")
-    if readings["task_accuracy"] < 0.92:
+    if readings.get("task_accuracy", 1.0) < 0.92:
         factors.append("task performance deviation")
     if health_status in {"action", "critical"}:
         factors.append("physiological deviation")

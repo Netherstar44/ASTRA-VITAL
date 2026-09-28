@@ -1,17 +1,19 @@
 from datetime import datetime, timezone
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
 from backend.ai.anomaly_detection.rules import detect_anomalies
 from backend.ai.behavioral.heuristics import behavior_summary
 from backend.ai.radiation.forecast import radiation_summary
+from backend.alerts.manager import Alert, AlertManager
 from backend.communications.dtn import DTNStore
 from backend.config.settings import settings
 from backend.core.behavior.analyzer import assess_behavior
 from backend.core.environment.space_weather import SpaceWeatherState, space_weather_for_step
 from backend.core.health.analyzer import assess_health
 from backend.core.telemetry.models import CrewState, TelemetryEvent, build_event
+from backend.core.telemetry.pipeline import normalize
 from backend.risk.engine import RiskEngine
 from backend.sensors.simulator import readings_for_step
 
@@ -30,6 +32,7 @@ class MissionSnapshot(BaseModel):
     behavior: dict
     environment: SpaceWeatherState
     risk: dict
+    alert: dict  # Resolved Alert from AlertManager (severity, HUD symbol, audio, haptic)
     anomalies: list[str]
     telemetry: list[TelemetryEvent]
     dtn: dict
@@ -42,6 +45,7 @@ class MissionService:
         self.relay_enabled = True
         self.store = DTNStore()
         self.risk_engine = RiskEngine()
+        self.alert_manager = AlertManager()
 
     def reset(self) -> MissionSnapshot:
         self.step = 0
@@ -55,6 +59,7 @@ class MissionService:
             self.relay_enabled = False
         if self.step == 5:
             self.relay_enabled = True
+            self.store.flush()
         return self.snapshot()
 
     def set_relay(self, enabled: bool) -> MissionSnapshot:
@@ -75,6 +80,8 @@ class MissionService:
             behavior_state=behavior.state,
             relay_enabled=self.relay_enabled,
         )
+        # FASE 6: Alert Manager resolves risk into a human-centered alert
+        alert: Alert = self.alert_manager.resolve(risk, step=self.step)
         crew_state = CrewState(
             physiology=max(0.12, 1 - min(0.88, max(0, readings["heart_rate"] - 72) / 120)),
             behavior=max(0.12, readings["task_accuracy"] - readings["tremor"] * 0.25),
@@ -84,7 +91,7 @@ class MissionService:
             radiation_risk=environment.risk_score,
             mission_stress=min(0.92, 0.28 + self.step * 0.11),
         )
-        events = self._telemetry_events(readings, risk["priority"])
+        events = normalize(self._telemetry_events(readings, risk["priority"]))
         for event in events:
             if not self.relay_enabled:
                 self.store.enqueue(event)
@@ -102,6 +109,7 @@ class MissionService:
             behavior=behavior.model_dump(),
             environment=environment,
             risk=risk,
+            alert=alert.model_dump(mode="json"),
             anomalies=detect_anomalies(readings),
             telemetry=events,
             dtn=self.store.summary(),
@@ -110,16 +118,47 @@ class MissionService:
 
     def assistant_answer(self, role: str, question: str) -> dict[str, str]:
         snapshot = self.snapshot()
-        return {
-            "role": role,
-            "question": question,
-            "answer": behavior_summary(snapshot, role)
-            if "comport" in question.lower()
-            else radiation_summary(snapshot, role),
-        }
+        q = question.lower()
+        if any(w in q for w in ("radia", "solar", "clima", "tormenta")):
+            ans = radiation_summary(snapshot, role)
+        elif any(w in q for w in ("comport", "conduct", "fatiga", "cognit", "ritmo", "carga")):
+            ans = behavior_summary(snapshot, role)
+        elif any(w in q for w in ("anomal", "telemetr", "signo", "pulso", "coraz", "sensor", "spo2")):
+            anom_text = ", ".join(snapshot.anomalies) if snapshot.anomalies else "Ninguna detectada. Señales dentro de línea base."
+            ans = (
+                f"Telemetría en tiempo real ({snapshot.crew_id}): "
+                f"Pulso {snapshot.readings['heart_rate']:.0f} BPM, "
+                f"SpO2 {snapshot.readings['spo2']:.0f}%, "
+                f"Temp {snapshot.readings['temperature']:.1f}°C, "
+                f"CO2 {snapshot.readings['co2']:.1f} mmHg, "
+                f"IMU {snapshot.readings['imu']:.2f}g. "
+                f"Anomalías: {anom_text}"
+            )
+        elif any(w in q for w in ("riesgo", "recom", "accion", "refugio", "protocolo", "seguridad")):
+            factors_text = ", ".join(snapshot.risk["factors"]) if snapshot.risk["factors"] else "Nominales"
+            ans = (
+                f"Evaluación de riesgo: {snapshot.risk['summary']} "
+                f"(Nivel: {snapshot.risk['level'].upper()}, Prioridad: {snapshot.risk['priority']}). "
+                f"Factores contribuyentes: {factors_text}. "
+                f"Recomendación ASTRA: {snapshot.risk['recommendation']}"
+            )
+        elif any(w in q for w in ("enlace", "comunic", "dtn", "buffer", "tierra", "houston")):
+            ans = (
+                f"Estado de conectividad: Enlace {snapshot.link_status.upper()}. "
+                f"Eventos en buffer DTN local: {snapshot.dtn.get('buffered', 0)}. "
+                f"Paquetes transmitidos prioritariamente: {snapshot.dtn.get('transmitted', 0)}. "
+                f"Continuidad operacional garantizada sin dependencia de Tierra."
+            )
+        else:
+            ans = (
+                f"ASTRA Core Intelligence ({snapshot.phase}) — {snapshot.phase_title}: "
+                f"{snapshot.phase_message} "
+                f"Recomendación actual: {snapshot.risk['recommendation']}"
+            )
+        return {"role": role, "question": question, "answer": ans}
 
     def _telemetry_events(self, readings: dict[str, float], priority: str) -> list[TelemetryEvent]:
-        return [
+        events = [
             build_event(
                 event_id=f"evt-{self.step:02d}-hr",
                 mission_id=settings.mission_id,
@@ -131,6 +170,56 @@ class MissionService:
                 priority=priority,
             ),
             build_event(
+                event_id=f"evt-{self.step:02d}-spo2",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="oximeter-01",
+                metric="spo2",
+                value=readings["spo2"],
+                unit="%",
+                priority="P1" if readings["spo2"] < 95 else "P3",
+            ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-temp",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="thermal-suit-01",
+                metric="temperature",
+                value=readings["temperature"],
+                unit="°C",
+                priority="P3",
+            ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-resp",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="respiration-band-01",
+                metric="respiration",
+                value=readings["respiration"],
+                unit="bpm",
+                priority="P3",
+            ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-imu",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="suit-imu-01",
+                metric="imu",
+                value=readings["imu"],
+                unit="g",
+                priority="P3",
+            ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-tremor",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="glove-haptic-01",
+                metric="tremor",
+                value=readings["tremor"],
+                unit="index",
+                priority="P1" if readings["tremor"] >= 0.45 else "P3",
+            ),
+            build_event(
                 event_id=f"evt-{self.step:02d}-rad",
                 mission_id=settings.mission_id,
                 astronaut_id=settings.default_crew_id,
@@ -140,7 +229,28 @@ class MissionService:
                 unit="mSv/h",
                 priority="P2" if self.step >= 1 else "P3",
             ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-co2",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="helmet-co2-01",
+                metric="co2",
+                value=readings["co2"],
+                unit="mmHg",
+                priority="P2" if readings["co2"] > 5.0 else "P3",
+            ),
+            build_event(
+                event_id=f"evt-{self.step:02d}-o2",
+                mission_id=settings.mission_id,
+                astronaut_id=settings.default_crew_id,
+                sensor="suit-o2-01",
+                metric="o2",
+                value=readings["o2"],
+                unit="%",
+                priority="P3",
+            ),
         ]
+        return events
 
     def _phase_label(self) -> str:
         return [

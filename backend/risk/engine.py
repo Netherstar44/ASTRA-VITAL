@@ -21,6 +21,7 @@ class RiskEngine:
             health_status=health_status,
             behavior_state=behavior_state,
             relay_enabled=relay_enabled,
+            shielding=environment.shielding,
         )
         score = min(
             0.99,

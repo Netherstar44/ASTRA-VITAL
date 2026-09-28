@@ -10,13 +10,13 @@
 ## 📊 PROGRESO GENERAL
 
 - [x] Fase 1 — Arquitectura ✅
-- [ ] Fase 2 — Simulador
-- [ ] Fase 3 — Data Quality
-- [ ] Fase 4 — Risk Engine
-- [ ] Fase 5 — IA
-- [ ] Fase 6 — Alert Manager
-- [ ] Fase 7 — Comunicación
-- [x] Fase 8 — Frontend ✅
+- [x] Fase 2 — Simulador ✅
+- [x] Fase 3 — Data Quality ✅
+- [x] Fase 4 — Risk Engine ✅
+- [x] Fase 5 — IA ✅
+- [x] Fase 6 — Alert Manager ✅
+- [x] Fase 7 — Comunicación ✅
+- [ ] Fase 8 — Frontend
 - [ ] Fase 9 — AI Assistant
 - [ ] Fase 10 — Demo final
 
@@ -638,57 +638,57 @@
 - [x] Definir APIs
 - [x] **Entregable:** arquitectura documentada (ASTRA-VITAL.md)
 
-### FASE 2 — Simulador
-- [ ] Sensor virtual: heart rate
-- [ ] Sensor virtual: SpO₂
-- [ ] Sensor virtual: temperature
-- [ ] Sensor virtual: respiration
-- [ ] Sensor virtual: IMU
-- [ ] Sensor virtual: tremor
-- [ ] Sensor virtual: radiation
-- [ ] Sensor virtual: CO₂
-- [ ] Sensor virtual: O₂
-- [ ] **Entregable:** telemetry stream funcionando
+### FASE 2 — Simulador (revisar)
+- [x] Sensor virtual: heart rate ✅
+- [x] Sensor virtual: SpO₂ ✅
+- [x] Sensor virtual: temperature ✅
+- [x] Sensor virtual: respiration ✅
+- [x] Sensor virtual: IMU ✅
+- [x] Sensor virtual: tremor ✅
+- [x] Sensor virtual: radiation ✅
+- [x] Sensor virtual: CO₂ ✅
+- [x] Sensor virtual: O₂ ✅
+- [x] **Entregable:** telemetry stream funcionando ✅
 
-### FASE 3 — Data Quality
-- [ ] Filtrado
-- [ ] Anomalías
-- [ ] Calidad
-- [ ] Margen de error
-- [ ] Confidence
-- [ ] **Entregable:** trusted telemetry
+### FASE 3 — Data Quality (revisar)
+- [x] Filtrado ✅
+- [x] Anomalías ✅
+- [x] Calidad ✅
+- [x] Margen de error ✅
+- [x] Confidence ✅
+- [x] **Entregable:** trusted telemetry ✅
 
-### FASE 4 — Risk Engine
-- [ ] Implementar reglas deterministas iniciales
-- [ ] Regla: IF radiation ↑ AND EVA = TRUE AND shielding = LOW THEN radiation_risk = HIGH
-- [ ] Planificar incorporación posterior de ML
-- [ ] **Entregable:** risk assessment
+### FASE 4 — Risk Engine (revisar)
+- [x] Implementar reglas deterministas iniciales ✅
+- [x] Regla: IF radiation ↑ AND EVA = TRUE AND shielding = LOW THEN radiation_risk = HIGH ✅
+- [x] Planificar incorporación posterior de ML ✅
+- [x] **Entregable:** risk assessment ✅
 
-### FASE 5 — IA
-- [ ] Anomaly detection
-- [ ] Behavioral analysis
-- [ ] Prediction
-- [ ] Space weather correlation
-- [ ] **Entregable:** AI-assisted risk detection
+### FASE 5 — IA (revisar)
+- [x] Anomaly detection ✅
+- [x] Behavioral analysis ✅
+- [x] Prediction ✅
+- [x] Space weather correlation ✅
+- [x] **Entregable:** AI-assisted risk detection ✅
 
 ### FASE 6 — Alert Manager
-- [ ] Severity
-- [ ] Prioridad
-- [ ] UX
-- [ ] Mensajes
-- [ ] Sonido
-- [ ] Concepto háptico
-- [ ] **Entregable:** human-centered alerts
+- [x] Severity ✅
+- [x] Prioridad ✅
+- [x] UX ✅
+- [x] Mensajes ✅
+- [x] Sonido ✅
+- [x] Concepto háptico ✅
+- [x] **Entregable:** human-centered alerts ✅
 
 ### FASE 7 — Comunicación
-- [ ] Simulación: Astronaut → Vehicle → Station → Earth
-- [ ] Queue
-- [ ] Priority
-- [ ] Buffer
-- [ ] Retry
-- [ ] Store-and-forward
-- [ ] Connection loss
-- [ ] **Entregable:** resilient communication
+- [x] Simulación: Astronaut → Vehicle → Station → Earth ✅
+- [x] Queue ✅
+- [x] Priority ✅
+- [x] Buffer ✅
+- [x] Retry ✅
+- [x] Store-and-forward ✅
+- [x] Connection loss ✅
+- [x] **Entregable:** resilient communication ✅
 
 ### FASE 8 — Frontend
 - [x] Astronaut HUD ✅
