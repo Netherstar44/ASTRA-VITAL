@@ -16,7 +16,7 @@
 - [ ] Fase 5 — IA
 - [ ] Fase 6 — Alert Manager
 - [ ] Fase 7 — Comunicación
-- [ ] Fase 8 — Frontend
+- [x] Fase 8 — Frontend ✅
 - [ ] Fase 9 — AI Assistant
 - [ ] Fase 10 — Demo final
 
@@ -691,13 +691,13 @@
 - [ ] **Entregable:** resilient communication
 
 ### FASE 8 — Frontend
-- [ ] Astronaut HUD
-- [ ] Mission Control
-- [ ] Medical dashboard
-- [ ] Behavioral dashboard
-- [ ] Radiation dashboard
-- [ ] Network monitor
-- [ ] **Entregable:** complete visualization
+- [x] Astronaut HUD ✅
+- [x] Mission Control ✅
+- [x] Medical dashboard ✅
+- [x] Behavioral dashboard ✅
+- [x] Radiation dashboard ✅
+- [x] Network monitor ✅
+- [x] **Entregable:** complete visualization ✅
 
 ### FASE 9 — AI Assistant
 - [ ] Integrar chatbot contextual
